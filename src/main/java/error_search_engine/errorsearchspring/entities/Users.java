@@ -16,9 +16,6 @@ public class Users {
     @Column(nullable = false)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Favourites.class, mappedBy = "userid")
-    private List<Favourites> usersToFavourites;
-
     public int getUserID() {
         return userid;
     }
@@ -30,5 +27,11 @@ public class Users {
         this.email = email;
     }
 
-
+    @ManyToMany
+    @JoinTable(
+            name = "favourites",
+            joinColumns = @JoinColumn(name ="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private List<Posts> userToPosts;
 }

@@ -16,15 +16,14 @@ public class Posts {
     @Column(nullable = false)
     private String link;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Favourites.class, mappedBy = "postid")
-    private List<Favourites> postsToFavourites;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userToPosts")
+    private List<Users> postsToUsers;
 
-
-    public int getPostID() {
+    public int getPostid() {
         return postid;
     }
-    public void setPostID(int postID) {
-        this.postid = postID;
+    public void setPostid(int postid) {
+        this.postid = postid;
     }
 
     public String getLink() {
@@ -33,6 +32,5 @@ public class Posts {
     public void setLink(String link) {
         this.link = link;
     }
-
-
+    
 }

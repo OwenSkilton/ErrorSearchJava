@@ -13,16 +13,13 @@ import java.util.Objects;
 @Setter
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
 public class FavouritesID implements Serializable {
 
-    @Column(name = "user_id")
-    private int users;
-    @Column(name = "post_id")
-    private int posts;
+    private int userid;
+    private int postid;
 
-    public FavouritesID(int users, int posts) {
-        this.users = users;
-        this.posts = posts;
+    public FavouritesID(int userid, int postid) {
+        this.userid = userid;
+        this.postid = postid;
     }
 }
