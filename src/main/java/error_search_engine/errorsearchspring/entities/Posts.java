@@ -11,18 +11,18 @@ public class Posts {
 
     @Id
     @Column(nullable = false)
-    private int postid;
+    private Long postid;
 
     @Column(nullable = false)
     private String link;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userToPosts")
-    private List<Users> postsToUsers;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postid")
+    private List<Favourites> postsToFavourites;
 
-    public int getPostid() {
+    public Long getPostid() {
         return postid;
     }
-    public void setPostid(int postid) {
+    public void setPostid(Long postid) {
         this.postid = postid;
     }
 
@@ -32,5 +32,6 @@ public class Posts {
     public void setLink(String link) {
         this.link = link;
     }
-    
+
+
 }

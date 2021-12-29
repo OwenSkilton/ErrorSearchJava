@@ -11,12 +11,15 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
+    private Long userid;
 
     @Column(nullable = false)
     private String email;
 
-    public int getUserID() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
+    private List<Favourites> usersToFavourites;
+
+    public Long getUserID() {
         return userid;
     }
 
@@ -27,11 +30,5 @@ public class Users {
         this.email = email;
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "favourites",
-            joinColumns = @JoinColumn(name ="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private List<Posts> userToPosts;
+
 }

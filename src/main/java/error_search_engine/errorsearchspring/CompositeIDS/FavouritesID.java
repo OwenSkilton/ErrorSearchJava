@@ -15,11 +15,10 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class FavouritesID implements Serializable {
 
-    private int userid;
-    private int postid;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "post_id")
+    private Long postId;
 
-    public FavouritesID(int userid, int postid) {
-        this.userid = userid;
-        this.postid = postid;
-    }
+
 }
