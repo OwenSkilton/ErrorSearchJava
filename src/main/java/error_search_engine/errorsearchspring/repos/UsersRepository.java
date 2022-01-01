@@ -9,5 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Api(tags = "Address Entity")
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 @CrossOrigin
-public interface UsersRepository extends CrudRepository<Users, Long> {
+public interface UsersRepository extends CrudRepository<Users, String> {
+
+    Users findByEmail(String email);
 }

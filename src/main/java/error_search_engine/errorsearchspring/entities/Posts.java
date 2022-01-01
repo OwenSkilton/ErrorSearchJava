@@ -1,12 +1,14 @@
 package error_search_engine.errorsearchspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor
 public class Posts {
 
     @Id
@@ -33,5 +35,13 @@ public class Posts {
         this.link = link;
     }
 
+    public Posts(Long postid, String link) {
+        this.postid = postid;
+        this.link = link;
+    }
 
+    public Posts(Long postid) {
+        this.postid = postid;
+        this.link = "https://stackoverflow.com/questions/"+postid;
+    }
 }

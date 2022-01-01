@@ -36,6 +36,11 @@ public class Favourites implements Serializable {
         this.postid = postid;
     }
 
+    public Favourites(Users userid, Posts postid) {
+        this.userid = userid;
+        this.postid = postid;
+    }
+
     public Favourites(FavouritesID favouritesID) {
         this.favouritesID = favouritesID;
     }

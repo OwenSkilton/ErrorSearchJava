@@ -1,6 +1,7 @@
 package error_search_engine.errorsearchspring.config;
 
 
+import error_search_engine.errorsearchspring.CompositeIDS.FavouritesID;
 import error_search_engine.errorsearchspring.entities.Favourites;
 import error_search_engine.errorsearchspring.entities.Posts;
 import error_search_engine.errorsearchspring.entities.Users;
@@ -16,6 +17,6 @@ public class RepositoryConfig implements RepositoryRestConfigurer {
         config.exposeIdsFor(Favourites.class);
         config.exposeIdsFor(Posts.class);
         config.exposeIdsFor(Users.class);
-
+        config.exposeIdsFor(FavouritesID.class);
     }
 }
