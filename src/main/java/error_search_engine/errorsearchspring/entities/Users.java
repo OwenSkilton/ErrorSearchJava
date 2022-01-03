@@ -10,18 +10,14 @@ import java.util.List;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
-
     @Column(nullable = false)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Favourites.class, mappedBy = "userid")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
     private List<Favourites> usersToFavourites;
 
-    public int getUserID() {
-        return userid;
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
+    private List<SearchHistory> usersToSearchHistory;
 
     public String getEmail() {
         return email;
@@ -30,5 +26,9 @@ public class Users {
         this.email = email;
     }
 
-
+    public Users() {
+    }
+    public Users(String email) {
+        this.email = email;
+    }
 }

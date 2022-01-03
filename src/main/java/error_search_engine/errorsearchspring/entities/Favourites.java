@@ -1,40 +1,47 @@
 package error_search_engine.errorsearchspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import error_search_engine.errorsearchspring.CompositeIDS.FavouritesID;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Favourites {
+@Getter
+@Setter
+@NoArgsConstructor
+public class Favourites implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int favouritesid;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postid")
-    private Posts postid;
+    @EmbeddedId
+    private FavouritesID favouritesID = new FavouritesID();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid")
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private Users userid;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("postId")
+    @JoinColumn(name = "post_id")
+    private Posts postid;
 
-    public int getFavouritesid() {
-        return favouritesid;
-    }
-
-    public Posts getPostid() {
-        return postid;
-    }
-    public void setPostid(Posts postid) {
+    public Favourites(FavouritesID favouritesID, Users userid, Posts postid) {
+        this.favouritesID = favouritesID;
+        this.userid = userid;
         this.postid = postid;
     }
 
-    public Users getUserid() {
-        return userid;
-    }
-    public void setUserid(Users userid) {
+    public Favourites(Users userid, Posts postid) {
         this.userid = userid;
+        this.postid = postid;
+    }
+
+    public Favourites(FavouritesID favouritesID) {
+        this.favouritesID = favouritesID;
     }
 }
