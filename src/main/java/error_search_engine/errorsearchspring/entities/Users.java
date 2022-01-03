@@ -16,6 +16,9 @@ public class Users {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
     private List<Favourites> usersToFavourites;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
+    private List<SearchHistory> usersToSearchHistory;
+
     public String getEmail() {
         return email;
     }

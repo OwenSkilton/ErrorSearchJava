@@ -17,4 +17,8 @@ import java.util.List;
 public interface FavouritesRepository extends CrudRepository<Favourites, FavouritesID> {
 
     Favourites findByUseridAndPostid(Users userid, Posts postid);
+
+    void deleteByUseridAndPostid(Users userid, Posts postid);
+
+    List<Favourites> findByUserid(Users userid);
 }
