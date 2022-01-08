@@ -1,9 +1,6 @@
 package error_search_engine.errorsearchspring.Controller;
 
-import error_search_engine.errorsearchspring.entities.Favourites;
-import error_search_engine.errorsearchspring.entities.Posts;
-import error_search_engine.errorsearchspring.entities.SearchHistory;
-import error_search_engine.errorsearchspring.entities.Users;
+import error_search_engine.errorsearchspring.entities.*;
 import error_search_engine.errorsearchspring.repos.FavouritesRepository;
 import error_search_engine.errorsearchspring.repos.PostsRepository;
 import error_search_engine.errorsearchspring.repos.SearchHistoryRepository;
@@ -66,22 +63,22 @@ public class MessageController {
         return searchHistoryRepository.findByUserid(findUser(userEmail));
     }
 
-    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords) throws IOException {
+    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}/{searchParameter}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords, @PathVariable SearchParameter searchParameter) throws IOException {
         Users user = createUser(userEmail);
-        return createSearchHistory(user, keywords);
+        return createSearchHistory(user, keywords, searchParameter);
     }
 
-    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}/{language}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords, @PathVariable String language) throws IOException {
+    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}/{language}/{searchParameter}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords, @PathVariable String language, @PathVariable SearchParameter searchParameter) throws IOException {
         Users user = createUser(userEmail);
-        return createSearchHistory(user, keywords, language);
+        return createSearchHistory(user, keywords, language, searchParameter);
     }
 
-    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}/{language}/{framework}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords, @PathVariable String language, @PathVariable String framework) throws IOException {
+    @PostMapping(path = "/postsearchhistory/{userEmail}/{keywords}/{language}/{framework}/{searchParameter}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SearchHistory postSearchHistory(@PathVariable String userEmail, @PathVariable String keywords, @PathVariable String language, @PathVariable String framework, @PathVariable SearchParameter searchParameter) throws IOException {
         Users user = createUser(userEmail);
-        return createSearchHistory(user, keywords, language, framework);
+        return createSearchHistory(user, keywords, language, framework, searchParameter);
     }
 
 
@@ -108,16 +105,16 @@ public class MessageController {
         return favouritesRepository.save(favourite);
     }
 
-    public SearchHistory createSearchHistory(Users user, String keywords){
-        SearchHistory newSearchHistory = new SearchHistory(keywords, user);
+    public SearchHistory createSearchHistory(Users user, String keywords, SearchParameter searchParameter){
+        SearchHistory newSearchHistory = new SearchHistory(keywords, user, searchParameter);
         return searchHistoryRepository.save(newSearchHistory);
     }
-    public SearchHistory createSearchHistory(Users user, String keywords, String language){
-        SearchHistory newSearchHistory = new SearchHistory(keywords, language, user);
+    public SearchHistory createSearchHistory(Users user, String keywords, String language, SearchParameter searchParameter){
+        SearchHistory newSearchHistory = new SearchHistory(keywords, language, user, searchParameter);
         return searchHistoryRepository.save(newSearchHistory);
     }
-    public SearchHistory createSearchHistory(Users user, String keywords, String language, String framework){
-        SearchHistory newSearchHistory = new SearchHistory(keywords, language, framework, user);
+    public SearchHistory createSearchHistory(Users user, String keywords, String language, String framework, SearchParameter searchParameter){
+        SearchHistory newSearchHistory = new SearchHistory(keywords, language, framework, user, searchParameter);
         return searchHistoryRepository.save(newSearchHistory);
     }
 }
