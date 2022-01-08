@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -28,21 +31,31 @@ public class SearchHistory {
     @JoinColumn(name = "userid", nullable = false)
     private Users userid;
 
-    public SearchHistory(String keywords, Users userid) {
+    private SearchParameter searchParameter;
+
+    private String date;
+
+    public SearchHistory(String keywords, Users userid, SearchParameter searchParameter) {
         this.keywords = keywords;
         this.userid = userid;
+        this.searchParameter = searchParameter;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
-    public SearchHistory(String keywords, String language, Users userid) {
+    public SearchHistory(String keywords, String language, Users userid, SearchParameter searchParameter) {
         this.keywords = keywords;
         this.language = language;
         this.userid = userid;
+        this.searchParameter = searchParameter;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
-    public SearchHistory(String keywords, String language, String framework, Users userid) {
+    public SearchHistory(String keywords, String language, String framework, Users userid, SearchParameter searchParameter) {
         this.keywords = keywords;
         this.language = language;
         this.framework = framework;
         this.userid = userid;
+        this.searchParameter = searchParameter;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 }
