@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,18 +32,23 @@ public class Favourites implements Serializable {
     @JoinColumn(name = "post_id")
     private Posts postid;
 
+    private String date;
+
     public Favourites(FavouritesID favouritesID, Users userid, Posts postid) {
         this.favouritesID = favouritesID;
         this.userid = userid;
         this.postid = postid;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
     public Favourites(Users userid, Posts postid) {
         this.userid = userid;
         this.postid = postid;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
     public Favourites(FavouritesID favouritesID) {
         this.favouritesID = favouritesID;
+        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 }
