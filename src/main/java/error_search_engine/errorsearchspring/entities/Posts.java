@@ -19,7 +19,7 @@ public class Posts {
     private String link;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "postid")
-    private List<Favourites> postsToFavourites;
+    private List<ForumFavourites> postsToForumFavourites;
 
     public Long getPostid() {
         return postid;

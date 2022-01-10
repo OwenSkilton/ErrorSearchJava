@@ -1,7 +1,7 @@
 package error_search_engine.errorsearchspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import error_search_engine.errorsearchspring.CompositeIDS.FavouritesID;
+import error_search_engine.errorsearchspring.CompositeIDS.ForumFavouritesID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,17 +10,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 @NoArgsConstructor
-public class Favourites implements Serializable {
+public class ForumFavourites implements Serializable {
 
     @EmbeddedId
-    private FavouritesID favouritesID = new FavouritesID();
+    private ForumFavouritesID forumFavouritesID = new ForumFavouritesID();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
@@ -34,21 +33,21 @@ public class Favourites implements Serializable {
 
     private String date;
 
-    public Favourites(FavouritesID favouritesID, Users userid, Posts postid) {
-        this.favouritesID = favouritesID;
+    public ForumFavourites(ForumFavouritesID forumFavouritesID, Users userid, Posts postid) {
+        this.forumFavouritesID = forumFavouritesID;
         this.userid = userid;
         this.postid = postid;
         this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
-    public Favourites(Users userid, Posts postid) {
+    public ForumFavourites(Users userid, Posts postid) {
         this.userid = userid;
         this.postid = postid;
         this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
-    public Favourites(FavouritesID favouritesID) {
-        this.favouritesID = favouritesID;
+    public ForumFavourites(ForumFavouritesID forumFavouritesID) {
+        this.forumFavouritesID = forumFavouritesID;
         this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 }

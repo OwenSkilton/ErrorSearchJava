@@ -1,17 +1,14 @@
 package error_search_engine.errorsearchspring.Controller;
 
 import error_search_engine.errorsearchspring.entities.*;
-import error_search_engine.errorsearchspring.repos.FavouritesRepository;
-import error_search_engine.errorsearchspring.repos.PostsRepository;
-import error_search_engine.errorsearchspring.repos.SearchHistoryRepository;
-import error_search_engine.errorsearchspring.repos.UsersRepository;
+import error_search_engine.errorsearchspring.repos.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -23,38 +20,73 @@ public class MessageController {
 
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
-    private final FavouritesRepository favouritesRepository;
+    private final DocumentationRepository documentationRepository;
+    private final ForumFavouritesRepository forumFavouritesRepository;
+    private final DocumentationFavouritesRepository documentationFavouritesRepository;
     private final SearchHistoryRepository searchHistoryRepository;
 
-    // ------------------ FAVOURITES ------------------
+    // ------------------ FORUM FAVOURITES ------------------
 
-    @PostMapping(path = "/postfavourite/{userEmail}/{question_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Favourites postFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
+    @PostMapping(path = "/postforumfavourite/{userEmail}/{question_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ForumFavourites postForumFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
         Users user = createUser(userEmail);
         Posts post = createPost(question_id);
-        return createFavourite(user, post);
+        return createForumFavourite(user, post);
     }
 
-    @GetMapping(path = "/findfavourite/{userEmail}/{question_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Favourites findFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
+    @GetMapping(path = "/findforumfavourite/{userEmail}/{question_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ForumFavourites findForumFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
         Users user = findUser(userEmail);
         Posts post = findPost(question_id);
-        return favouritesRepository.findByUseridAndPostid(user, post);
+        return forumFavouritesRepository.findByUseridAndPostid(user, post);
     }
 
-    @GetMapping(path = "finduserfavourites/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Favourites> findUserFavourites(@PathVariable String userEmail){
+    @GetMapping(path = "finduserforumfavourites/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ForumFavourites> findUserForumFavourites(@PathVariable String userEmail){
         Users user = findUser(userEmail);
-        return favouritesRepository.findByUserid(user);
+        return forumFavouritesRepository.findByUserid(user);
     }
 
     @Transactional
-    @DeleteMapping(path = "/deletefavourite/{userEmail}/{question_id}")
-    public void deleteFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
+    @DeleteMapping(path = "/deleteforumfavourite/{userEmail}/{question_id}")
+    public void deleteForumFavourite(@PathVariable String userEmail, @PathVariable int question_id) throws IOException {
         Users user = createUser(userEmail);
         Posts post = createPost(question_id);
-        favouritesRepository.deleteByUseridAndPostid(user, post);
+        forumFavouritesRepository.deleteByUseridAndPostid(user, post);
     }
+
+    // ------------------ DOCUMENTATION FAVOURITES ------------------
+
+    @PostMapping(path = "/postdocumentationfavourite/{userEmail}/{documentation_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public DocumentationFavourites postDocumentationFavourite(@PathVariable String userEmail, @PathVariable String documentation_id, @RequestBody String link) throws IOException {
+        link = link.substring(1, link.length()-1);
+        Users user = createUser(userEmail);
+        Documentation documentation = createDocumentation(documentation_id, link);
+        return createDocumentationFavourite(user, documentation);
+    }
+
+    @GetMapping(path = "/finddocumentationfavourite/{userEmail}/{documentation_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public DocumentationFavourites findDocumentationFavourite(@PathVariable String userEmail, @PathVariable String documentation_id) throws IOException {
+        Users user = findUser(userEmail);
+        Documentation documentation = findDocumentation(documentation_id);
+        return documentationFavouritesRepository.findByUseridAndDocumentationid(user, documentation);
+    }
+
+    @GetMapping(path = "finduserdocumentationfavourites/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DocumentationFavourites> findUserDocumentationFavourites(@PathVariable String userEmail){
+        Users user = findUser(userEmail);
+        return documentationFavouritesRepository.findByUserid(user);
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/deletedocumentationfavourite/{userEmail}/{documentation_id}")
+    public void deleteDocumentationFavourite(@PathVariable String userEmail, @PathVariable String documentation_id, @RequestBody String link) throws IOException {
+        Users user = createUser(userEmail);
+        Documentation documentation = createDocumentation(documentation_id, link);
+        documentationFavouritesRepository.deleteByUseridAndDocumentationid(user, documentation);
+    }
+
 
     // ------------------ SEARCH HISTORY ------------------
 
@@ -100,9 +132,22 @@ public class MessageController {
         return postsRepository.findByPostid((long) question_id);
     }
 
-    public Favourites createFavourite(Users user, Posts post){
-        Favourites favourite = new Favourites(user, post);
-        return favouritesRepository.save(favourite);
+    public Documentation createDocumentation(String documentation_id, String link) throws UnsupportedEncodingException {
+        Documentation documentation = new Documentation(documentation_id, link);
+        return documentationRepository.save(documentation);
+    }
+    public Documentation findDocumentation(String documentation_id){
+        return documentationRepository.findByDocumentationid(documentation_id);
+    }
+
+    public ForumFavourites createForumFavourite(Users user, Posts post){
+        ForumFavourites favourite = new ForumFavourites(user, post);
+        return forumFavouritesRepository.save(favourite);
+    }
+
+    public DocumentationFavourites createDocumentationFavourite(Users user, Documentation documentation){
+        DocumentationFavourites favourite = new DocumentationFavourites(user, documentation);
+        return documentationFavouritesRepository.save(favourite);
     }
 
     public SearchHistory createSearchHistory(Users user, String keywords, SearchParameter searchParameter){
