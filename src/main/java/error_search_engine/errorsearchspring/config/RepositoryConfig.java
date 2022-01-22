@@ -13,12 +13,14 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 public class RepositoryConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        config.exposeIdsFor(ForumFavourites.class);
-        config.exposeIdsFor(DocumentationFavourites.class);
-        config.exposeIdsFor(Posts.class);
         config.exposeIdsFor(Users.class);
-        config.exposeIdsFor(Documentation.class);
+        config.exposeIdsFor(Posts.class);
+        config.exposeIdsFor(ForumFavourites.class);
         config.exposeIdsFor(ForumFavouritesID.class);
+        config.exposeIdsFor(Documentation.class);
+        config.exposeIdsFor(DocumentationFavourites.class);
         config.exposeIdsFor(DocumentationFavouritesID.class);
+        config.exposeIdsFor(CrawlerItem.class);
+        config.exposeIdsFor(CrawlerFavourites.class);
     }
 }

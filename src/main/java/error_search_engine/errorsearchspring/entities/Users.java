@@ -20,7 +20,11 @@ public class Users {
     private List<DocumentationFavourites> usersToDocumentationFavourites;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
+    private List<CrawlerFavourites> userToCrawlerFavourite;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid")
     private List<SearchHistory> usersToSearchHistory;
+
 
     public String getEmail() {
         return email;

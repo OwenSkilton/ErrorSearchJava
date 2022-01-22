@@ -37,7 +37,6 @@ public class Documentation {
 
     public Documentation(String documentationid, String link) throws UnsupportedEncodingException {
         this.documentationid = documentationid;
-//        this.link = URLDecoder.decode(link, "UTF-8");
         this.link = link;
     }
 

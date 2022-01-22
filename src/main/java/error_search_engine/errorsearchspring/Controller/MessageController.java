@@ -21,8 +21,10 @@ public class MessageController {
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
     private final DocumentationRepository documentationRepository;
+    private final CrawlerItemRepository crawlerItemRepository;
     private final ForumFavouritesRepository forumFavouritesRepository;
     private final DocumentationFavouritesRepository documentationFavouritesRepository;
+    private final CrawlerFavouritesRepository crawlerFavouritesRepository;
     private final SearchHistoryRepository searchHistoryRepository;
 
     // ------------------ FORUM FAVOURITES ------------------
@@ -87,6 +89,40 @@ public class MessageController {
         documentationFavouritesRepository.deleteByUseridAndDocumentationid(user, documentation);
     }
 
+    // ------------------ CRAWLER FAVOURITES ------------------
+
+    @PostMapping(path = "/postcrawleritemfavourite/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public CrawlerFavourites postCrawlerItemFavourite(@PathVariable String userEmail, @RequestBody String link) throws IOException {
+        link = link.substring(1, link.length()-1);
+        Users user = createUser(userEmail);
+        CrawlerItem crawlerItem = createCrawlerItem(link);
+        return createCrawlerItemFavourite(user, crawlerItem);
+    }
+
+    @PostMapping(path = "/findcrawleritemfavourite/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CrawlerFavourites findCrawlerItemFavourite(@PathVariable String userEmail, @RequestBody String link) throws IOException {
+        link = link.substring(1, link.length()-1);
+        Users user = findUser(userEmail);
+        CrawlerItem crawlerItem = findCrawlerItem(link);
+        return crawlerFavouritesRepository.findByUseridAndLinkid(user, crawlerItem);
+    }
+
+    @GetMapping(path = "findusercrawleritemfavourites/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CrawlerFavourites> findUserCrawlerItemFavourites(@PathVariable String userEmail){
+        Users user = findUser(userEmail);
+        return crawlerFavouritesRepository.findByUserid(user);
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/deletecrawleritemfavourite/{userEmail}")
+    public void deleteCrawlerItemFavourite(@PathVariable String userEmail, @RequestBody String link) throws IOException {
+        link = link.substring(1, link.length()-1);
+        Users user = createUser(userEmail);
+        CrawlerItem crawlerItem = createCrawlerItem(link);
+        crawlerFavouritesRepository.deleteByUseridAndLinkid(user, crawlerItem);
+    }
+
 
     // ------------------ SEARCH HISTORY ------------------
 
@@ -140,6 +176,14 @@ public class MessageController {
         return documentationRepository.findByDocumentationid(documentation_id);
     }
 
+    public CrawlerItem createCrawlerItem(String link_id) throws UnsupportedEncodingException {
+        CrawlerItem crawlerItem = new CrawlerItem(link_id);
+        return crawlerItemRepository.save(crawlerItem);
+    }
+    public CrawlerItem findCrawlerItem(String link_id){
+        return crawlerItemRepository.findByLinkid(link_id);
+    }
+
     public ForumFavourites createForumFavourite(Users user, Posts post){
         ForumFavourites favourite = new ForumFavourites(user, post);
         return forumFavouritesRepository.save(favourite);
@@ -148,6 +192,11 @@ public class MessageController {
     public DocumentationFavourites createDocumentationFavourite(Users user, Documentation documentation){
         DocumentationFavourites favourite = new DocumentationFavourites(user, documentation);
         return documentationFavouritesRepository.save(favourite);
+    }
+
+    public CrawlerFavourites createCrawlerItemFavourite(Users user, CrawlerItem crawlerItem){
+        CrawlerFavourites favourite = new CrawlerFavourites(user, crawlerItem);
+        return crawlerFavouritesRepository.save(favourite);
     }
 
     public SearchHistory createSearchHistory(Users user, String keywords, SearchParameter searchParameter){
